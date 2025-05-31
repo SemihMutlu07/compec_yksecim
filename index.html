@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Compec 2025-2026 YK Seçimi</title>
+  <style>
+    :root {
+      --primary: #007bff;
+      --primary-dark: #005ec4;
+      --primary-light: #e8f0ff;
+      --text-light: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    /* Ortak kapsayıcı */
+    .wrapper { text-align: center; }
+
+    h1 {
+      margin: 0 0 28px;
+      font-size: 32px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* 3×3 Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 840px;
+      width: 100%;
+      justify-content: center; /* tüm 3 sütunu genel olarak ortala */
+    }
+
+    .card {
+      background: #ffffff;
+      border: 2px solid var(--primary-light);
+      border-radius: 12px;
+      padding: 26px 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--primary-dark);
+      line-height: 1.3;
+    }
+
+    .count {
+      font-size: 32px;
+      margin: 6px 0 18px;
+      color: #333333;
+      font-weight: bold;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border: 2px solid var(--primary);
+      color: var(--text-light);
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .btn-secondary {
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:disabled { opacity: 0.4; cursor: default; }
+
+    .btn-secondary:hover:not(:disabled) { background: var(--primary-light); }
+  </style>
+</head>
+<body>
+  <script>
+    const people = [
+      "H. Berre Yılmaz",
+      "Kerem Yoldaş",
+      "İremnur Yıldız",
+      "Zişan F. Yalçın",
+      "Özlem Yavuz",
+      "Ali S. Kökoğlu",
+      "T. Kuter Sancak"
+    ];
+
+    const counts = Array(people.length).fill(0);
+
+    function render() {
+      document.body.innerHTML = "";
+
+      // Dış sarmal wrapper
+      const wrapper = document.createElement("div");
+      wrapper.className = "wrapper";
+      document.body.appendChild(wrapper);
+
+      // Başlık
+      const heading = document.createElement("h1");
+      heading.textContent = "Compec 2025-2026 YK Seçimi";
+      wrapper.appendChild(heading);
+
+      // Grid
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      wrapper.appendChild(grid);
+
+      people.forEach((name, idx) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        // Son elemanı ortalamak için orta sütuna yerleştir
+        if (idx === people.length - 1) {
+          card.style.gridColumn = "2 / span 1"; // 2. sütun
+        }
+
+        card.innerHTML = `
+          <h2>${name}</h2>
+          <div id="count-${idx}" class="count">${counts[idx]}</div>
+          <button class="btn btn-primary" onclick="increment(${idx})">Oy Ver</button>
+          <button id="dec-${idx}" class="btn btn-secondary" onclick="decrement(${idx})" disabled>Oy Eksilt</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function increment(index) {
+      counts[index]++;
+      updateDisplay(index);
+    }
+
+    function decrement(index) {
+      if (counts[index] > 0) {
+        counts[index]--;
+        updateDisplay(index);
+      }
+    }
+
+    function updateDisplay(index) {
+      document.getElementById(`count-${index}`).textContent = counts[index];
+      const decBtn = document.getElementById(`dec-${index}`);
+      decBtn.disabled = counts[index] === 0;
+    }
+
+    render();
+  </script>
+</body>
+</html>
